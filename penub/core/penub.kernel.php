@@ -1,0 +1,3 @@
+<?php
+
+// Welcome to Kernel
