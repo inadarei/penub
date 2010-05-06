@@ -1,30 +1,34 @@
 <?php
+/**
+* Kernel class is responsible for bootstrapping and orchestrating a request.
+*/
 
-define ('PENUB_ERROR_NOTICE',  1);
-define ('PENUB_ERROR_WARNING', 2);
-define ('PENUB_ERROR_WARNING', 3);
-define ('PENUB_ERROR_FATAL',   4);
-
-// Welcome to Kernel
+require_once (PENUB_KERNEL_PATH . '/core/penub.util.inc');
 
 class PenubKernel {
+  
+  var $http_server;
+  var $http_get;
+  var $http_post;
+  var $http_files;  
+  var $http_request;
 
+  var $module_manager;
+    
   function __construct() {
-  }  
+    require_once (PENUB_KERNEL_PATH . '/core/module.manager.inc');    
+    $this->module_manager = new PenubModuleManager();
+  } 
   
-}
-
-
-/**
-* Centralized error logger. Demo implementation.
-* @TODO: create a more robust implementation.
-*/
-function penub_error($msg, $severity) {
-
-  echo ($msg);
-  
-  if ($severity == PENUB_ERROR_FATAL) {
-    exit(1);
+  function run($req) {
+    $this->http_server  = $req->http_server;  
+    $this->http_get     = $req->http_get;     
+    $this->http_post    = $req->http_post;    
+    $this->http_files   = $req->http_files;   
+    $this->http_request = $req->http_request; 
+    
+    $this->module_manager->dispatch('processHTTPRequest', $this);
   }
+   
   
 }

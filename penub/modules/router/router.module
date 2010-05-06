@@ -1,0 +1,27 @@
+<?php
+
+/**
+* @File Default implementation of the URL Router.
+*/
+
+/**
+* hook_config implementation.
+*/
+function router_config() {
+  return array (
+    'info' => array (
+      'title' => 'Default Router Library',
+      'description' => 'Default implementation of URL routing',
+      'version' => '1.0',      
+      'weight' => '0', //-- 0 is default
+      'dependencies' => array(),
+    ),
+    'implementation' => (
+      'class' => 'PenubURLRouter',
+      //-- location is relative to penub/modules, pcontrib/modules or custom/modules
+      //-- if omitted it is assumed taht the location of the class file is the same as of the module file
+      //--'location' => 'router', 
+    )
+  );
+
+}

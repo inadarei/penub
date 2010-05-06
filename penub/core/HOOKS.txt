@@ -1,0 +1,4 @@
+# hook_config()
+  - in a .module file, defines module configuration
+# ImplClass->processHTTPRequest()
+  - module implementation object

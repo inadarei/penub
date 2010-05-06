@@ -4,7 +4,12 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
   require_once ('config.php');
 }
 else {
-  define('PENUB_KERNEL_PATH', 'penub');
+  die("Configuration file not found! Please make sure there's config.php in the root folder.");
 }
 
 require_once (PENUB_KERNEL_PATH . '/core/penub.kernel.inc');
+
+
+$kernel = new PenubKernel();
+$req = fetch_request_object_from_http();
+$kernel->run($req);
