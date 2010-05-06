@@ -16,10 +16,16 @@ class PenubKernel {
   var $http_request;
 
   var $module_manager;
+  
+  var $page_load_started;
     
   function __construct() {
+    if (PENUB_SHOW_METRICS) {
+      $this->page_load_started = microtime(True);
+    }
+    
     require (PENUB_KERNEL_PATH . '/core/module.manager.inc');    
-    $this->module_manager = new PenubModuleManager();
+    $this->module_manager = new PenubModuleManager($this);
   } 
   
   function run($req) {
@@ -29,7 +35,19 @@ class PenubKernel {
     $this->http_files   = $req->http_files;   
     $this->http_request = $req->http_request; 
     
-    $this->module_manager->dispatch('processHTTPRequest', $this);
+    $this->module_manager->dispatch('processHTTPRequest');
+    
+    if (PENUB_SHOW_METRICS) {
+      $this->printMetrics();
+    }
+  }
+  
+  private function printMetrics() {
+    $endtime = microtime(True);
+    
+    $metrics[] = sprintf(dt('Page loaded in %d seconds'), $endtime - $this->page_load_started);
+        
+    penub_error($metrics);    
   }
    
   

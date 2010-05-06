@@ -10,7 +10,7 @@
 function router_config() {
   return array (
     'info' => array (
-      'title' => 'Default Router Library',
+      'title' => 'Default Routing Library',
       'description' => 'Default implementation of URL routing',
       'version' => '1.0',      
       'weight' => '0', //-- 0 is default
@@ -19,8 +19,8 @@ function router_config() {
     'implementation' => array (
       'class' => 'PenubURLRouter',
       //-- location is relative to penub/modules, pcontrib/modules or custom/modules
-      //-- if omitted it is assumed taht the location of the class file is the same as of the module file
-      //--'location' => 'router', 
+      //-- if omitted it is assumed that the location of the class file is the same as of the module file
+      //--'filepath' => 'router/PenubURLRouter.class.inc', 
     )
   );
 

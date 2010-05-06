@@ -1,11 +1,17 @@
 <?php
 
+require (dirname(__FILE__) . '/module.class.inc');
+
 class PenubModuleManager {
   
+  var $kernel;
   var $modules;
   var $modules_conf_file;
   
-  function __construct() {
+  function __construct(&$kernel) {
+  
+    $this->kernel = $kernel;
+    
     $search_locations = array( PENUB_KERNEL_PATH  . '/modules', 
                                PENUB_CONTRIB_PATH . '/modules', 
                                PENUB_CUSTOM_CODE_PATH . '/modules');
@@ -16,20 +22,57 @@ class PenubModuleManager {
     
     $this->modules_conf_file = PENUB_RUNTIMECONF_FOLDER_PATH . '/modules.conf';
     
-    if (file_exists($this->modules_conf_file)) {
+    if (file_exists($this->modules_conf_file) && (PENUB_CACHE_LEVEL != PENUB_CACHE_NONE)) {
       $this->modules = Spyc::YAMLLoad($this->modules_conf_file);
     } else {                          
       $this->findModules($search_locations);
+      $this->checkEnabledStatusOfModules();
+      $this->sortModulesByWeight();
       $yaml = Spyc::YAMLDump($this->modules);
       file_put_contents($this->modules_conf_file, $yaml, LOCK_EX);      
     }
   }
   
-  function dispatch($action, $kernel) {
+  function dispatch($action) {
     penub_error($this->modules);
-    penub_log($action);
+    if (is_array($this->modules)) {
+      $state = array();
+      foreach ($this->modules as $mod) {
+        if (file_exists($mod['implementation']['filepath'])) {
+          $className = $mod['implementation']['class'];
+          //-- a trick to optimize performance and not using require_once
+          if (!class_exists($className)) {
+            require ($mod['implementation']['filepath']);
+          }
+          $modObj = new $className($this->kernel);
+          if (method_exists($modObj, $action)) {
+            $modObj->$action($state);
+          }
+        }        
+      }
+      
+      return $state;
+    }
   } 
   
+  /**
+  * Remove explicitely disabled modules and modules that have broken dependencies.
+  * @TODO needs to be implemented.
+  */
+  private function checkEnabledStatusOfModules() {
+  }
+  
+  /**
+  *  Sort modules by weight so that their execution sequence can be controlled if needed.
+  *  @TODO needs to be implemented.
+  */
+  private function sortModulesByWeight() {
+    
+  }
+  
+  /**
+  * Find all available modules (regardless of enabled/disabled status).
+  */
   private function findModules($locations) {
     if (!is_array($locations)) {
       $locations = array($locations);
@@ -57,6 +100,9 @@ class PenubModuleManager {
             
             if (function_exists($hook_config_function)) {
               $this->modules[$modname] = $hook_config_function();
+              if (empty($this->modules[$modname]['implementation']['filepath'])) {
+                $this->modules[$modname]['implementation']['filepath'] = dirname($modfile) . '/' . strtolower($this->modules[$modname]['implementation']['class']) . '.class.inc';
+              }
             }
               
           }
