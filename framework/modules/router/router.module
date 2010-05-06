@@ -16,7 +16,7 @@ function router_config() {
       'weight' => '0', //-- 0 is default
       'dependencies' => array(),
     ),
-    'implementation' => (
+    'implementation' => array (
       'class' => 'PenubURLRouter',
       //-- location is relative to penub/modules, pcontrib/modules or custom/modules
       //-- if omitted it is assumed taht the location of the class file is the same as of the module file

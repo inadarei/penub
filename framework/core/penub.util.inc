@@ -25,7 +25,7 @@ function dt($msg) {
 */
 function penub_error($msg, $severity = PENUB_ERROR_WARNING) {
 
-  echo ($msg);
+  echo ('<pre>' . print_r($msg, TRUE) . '</pre>');
   
   if ($severity == PENUB_ERROR_FATAL) {
     exit(1);
