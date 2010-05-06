@@ -8,13 +8,15 @@ class PenubModuleManager {
   var $modules;
   var $modules_conf_file;
   
-  function __construct(&$kernel) {
+  function __construct($kernel) {
   
     $this->kernel = $kernel;
     
-    $search_locations = array( PENUB_KERNEL_PATH  . '/modules', 
-                               PENUB_CONTRIB_PATH . '/modules', 
-                               PENUB_CUSTOM_CODE_PATH . '/modules');
+    $search_locations = array(
+      PENUB_KERNEL_PATH      . '/modules', 
+      PENUB_CONTRIB_PATH     . '/modules', 
+      PENUB_CUSTOM_CODE_PATH . '/modules'
+    );
     
     if (!file_exists(PENUB_RUNTIMECONF_FOLDER_PATH)) {
       mkdir(PENUB_RUNTIMECONF_FOLDER_PATH);
@@ -40,14 +42,19 @@ class PenubModuleManager {
       foreach ($this->modules as $mod) {
         if (file_exists($mod['implementation']['filepath'])) {
           $className = $mod['implementation']['class'];
+          
           //-- a trick to optimize performance and not using require_once
           if (!class_exists($className)) {
             require ($mod['implementation']['filepath']);
           }
-          $modObj = new $className($this->kernel);
+          
+          $modObj = new $className();
+          $modObj->kernel = $this->kernel;
+          
           if (method_exists($modObj, $action)) {
             $modObj->$action($state);
           }
+          
         }        
       }
       
