@@ -10,5 +10,4 @@ else {
 require (PENUB_KERNEL_PATH . '/core/penub.kernel.inc');
 
 $kernel = new PenubKernel();
-$req = fetch_request_object_from_http();
-$kernel->run($req);
+$kernel->run();

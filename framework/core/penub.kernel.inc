@@ -3,7 +3,7 @@
 * Kernel class is responsible for bootstrapping and orchestrating a request.
 */
 
-require (PENUB_KERNEL_PATH . '/core/penub.util.inc');
+require (PENUB_KERNEL_PATH     . '/core/penub.util.inc');
 require (PENUB_LIB_FOLDER_PATH . '/spyc/spyc.php');
 
 
@@ -28,7 +28,9 @@ class PenubKernel {
     $this->module_manager = new PenubModuleManager($this);
   } 
   
-  function run($req) {
+  function run() {
+    $req = fetch_request_object_from_http();    
+    
     $this->http_server  = $req->http_server;  
     $this->http_get     = $req->http_get;     
     $this->http_post    = $req->http_post;    

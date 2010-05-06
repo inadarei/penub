@@ -35,10 +35,11 @@ class PenubModuleManager {
     }
   }
   
-  function dispatch($action) {
-    penub_error($this->modules);
+  function dispatch($action, $state = NULL) {
+    //penub_error($this->modules);
+    
     if (is_array($this->modules)) {
-      $state = array();
+
       foreach ($this->modules as $mod) {
         if (file_exists($mod['implementation']['filepath'])) {
           $className = $mod['implementation']['class'];
@@ -52,7 +53,7 @@ class PenubModuleManager {
           $modObj->kernel = $this->kernel;
           
           if (method_exists($modObj, $action)) {
-            $modObj->$action($state);
+            call_user_func_array(array($modObj, $action), array(&$state));
           }
           
         }        

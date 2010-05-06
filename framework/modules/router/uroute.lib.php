@@ -149,7 +149,7 @@ class URoute_Template implements URoute_Constants {
     try {
     
       $uri = rtrim($uri, '\/');
-      
+
       if (preg_match($this->getExpression(), $uri, $matches)) {
         
         foreach($matches as $k=>$v) {
@@ -269,7 +269,7 @@ class URoute_Router {
   }
   
   public static function route($uri) {
-  
+
     $routes = self::getRoutes();
     
     try {
@@ -303,13 +303,9 @@ abstract class URoute_Service implements URoute_Constants {
   private $endPoint;
   private $requestURI;
   
-  public function __construct() {
-    $this->init();
-  }
-  
-  private function init() {    
+  public function __construct($endPoint) {
     $this->setHost();
-    $this->setEndPoint();
+    $this->setEndPoint($endPoint);
     $this->service();
     $this->route();
   }
@@ -323,17 +319,26 @@ abstract class URoute_Service implements URoute_Constants {
   }
   
   private function setRequestURI() {
-    $tokens = parse_url($_SERVER['REQUEST_URI']);
-    $path   = str_replace($this->path, '', $tokens['path']);
+    $uri = $_SERVER['REQUEST_URI'];
+
+    if (array_key_exists('q', $_GET)) {
+      $uri = $_GET['q'];
+    }
+    
+    $tokens = parse_url($uri);
+    $path   = $tokens['path'];
+    
+    if ($path{0} != '/') {
+      $path = '/'. $path;
+    }
+    
     $this->requestURI = $path == '/' ? '' : $path;
   }
   
-  protected function setEndPoint() {
-    $class   = new ReflectionClass($this);
-    $file    = $class->getFileName();
+  private function setEndPoint($file) {
     $dirname = dirname($file);
-    $path    = str_replace($_SERVER['DOCUMENT_ROOT'], '', $dirname);
-    
+    $path    = '/';
+
     $this->dirname  = $dirname;
     $this->path     = $path;
     $this->endPoint = $this->host . $this->path;
