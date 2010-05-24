@@ -21,6 +21,7 @@ class PenubURLRouterService extends URoute_Service {
   
   public function error($exception) {
   }
+  
 }
 
 class PenubURLRouter extends PenubModule implements URoute_Constants {

@@ -1,6 +1,19 @@
 <?php
 
-define ('PENUB_DB', 'mysql://user:password@server/db_name');
+$databases = array (
+  'default' =>
+    array (
+      'default' =>
+      array (
+        'driver' => 'mysql',
+        'database' => 'beta_penub_com',
+        'username' => 'root',
+        'password' => '',
+        'host' => 'localhost',
+        'port' => '',
+      ),
+    ),
+);
 
 define ('PENUB_KERNEL_PATH', 'framework');
 define ('PENUB_CONTRIB_PATH', 'pcontrib');

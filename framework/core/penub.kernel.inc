@@ -6,7 +6,6 @@
 require (PENUB_KERNEL_PATH     . '/core/penub.util.inc');
 require (PENUB_LIB_FOLDER_PATH . '/spyc/spyc.php');
 
-
 class PenubKernel {
   
   var $http_server;
@@ -47,7 +46,7 @@ class PenubKernel {
   private function printMetrics() {
     $endtime = microtime(True);
     
-    $metrics[] = sprintf(dt('Page loaded in %d seconds'), $endtime - $this->page_load_started);
+    $metrics[] = sprintf(dt('Page loaded in %.6f seconds'), $endtime - $this->page_load_started);
         
     penub_error($metrics);    
   }

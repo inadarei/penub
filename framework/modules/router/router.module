@@ -5,7 +5,7 @@
 */
 
 /**
-* hook_config implementation.
+* Module configuration.
 */
 function router_config() {
   return array (
