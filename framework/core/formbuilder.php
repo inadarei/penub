@@ -12,10 +12,15 @@ abstract class HTMLBaseElement {
   protected $attributes         = array();
   protected $tag                = NULL;
   protected $properties;
+  protected $events;
   
   public function __construct($tag) {
     $this->tag        = $tag;
     $this->properties = (object) array();
+    $this->events     = (object) array(
+      'onpropertychange'  => array(),
+      'onattributechange' => array(),
+    );
   }
   
   public function &__get($attribute) {
@@ -30,8 +35,10 @@ abstract class HTMLBaseElement {
   public function __set($attribute, $value) {
     if (in_array($attribute, $this->allowed_attributes)) {
       $this->attributes[$attribute] = $value;
+      $this->attributechanged($attribute, $value);
     } else {
       $this->properties->{$attribute} = $value;
+      $this->propertychanged($attribute, $value);
     }
   }
   
@@ -42,9 +49,20 @@ abstract class HTMLBaseElement {
       call_user_func(array($this, $attribute), $value);
     } else if (in_array($attribute, $this->allowed_attributes)) {
       $this->attributes[$attribute] = $value;
+      $this->attributechanged($attribute, $value);
+    } else if (property_exists($this->events, $attribute)) {
+      $this->events->{$attribute}[$value][] = array_shift($args);
     }
     
     return $this;
+  }
+  
+  public function __unset($attribute) {
+    if (array_key_exists($attribute, $this->attributes)) {
+      unset($this->attributes[$attribute]);
+    } else if (property_exists($this->properties, $attribute)) {
+      unset($this->properties->{$attribute});
+    }
   }
   
   public function __toString() {
@@ -92,6 +110,22 @@ abstract class HTMLBaseElement {
     $this->properties         = NULL;
   }
   
+  private function propertychanged($property, $value) {
+    if (is_array($this->events->onpropertychange[$property])) {
+      foreach ($this->events->onpropertychange[$property] as $callback) {
+        call_user_func($callback, $value, $this);
+      }
+    }
+  }
+  
+  private function attributechanged($property, $value) {
+    if (is_array($this->events->onattributechange[$property])) {
+      foreach ($this->events->onattributechange[$property] as $callback) {
+        call_user_func($callback, $value, $this);
+      }
+    }
+  }
+   
 }
 
 class HTMLElement extends HTMLBaseElement implements HTMLElementWithBody {
@@ -129,7 +163,7 @@ abstract class HTMLBaseFormElement extends HTMLBaseElement {
   public function __toString() {
     foreach ($this->validator as $validator) {
       if (!call_user_func_array($validator, array($this))) {
-        $this->attributes['class'][] = 'error';
+        $this->class[] = 'error';
       }
     }
     return parent::__toString();
@@ -139,14 +173,33 @@ abstract class HTMLBaseFormElement extends HTMLBaseElement {
 
 class HTMLForm extends HTMLBaseFormElement implements HTMLElementWithBody {
   
+  private $fields;
+  
   public function __construct($name) {
     parent::__construct('form', $name);
+    
+    $this->fields = (object) array();
     
     $this->allowed_attributes[] = 'enctype';
     $this->allowed_attributes[] = 'method';
     $this->allowed_attributes[] = 'action';
     
     $this->name($name)->id($name)->method('get');
+  }
+  
+  public function &__get($property) {
+    if (property_exists($this->fields, $property)) {
+      return $this->fields->{$property};
+    }
+    return parent::__get($property);
+  }
+  
+  public function __set($property, $value) {
+    if (property_exists($this->fields, $property)) {
+      $this->fields->{$property}->value = $value;
+    } else {
+      parent::__set($property, $value);
+    }
   }
   
   public function append() {
@@ -162,6 +215,7 @@ class HTMLForm extends HTMLBaseFormElement implements HTMLElementWithBody {
           $this->append_fieldset($element);
         } else {
           $this->properties->elements[] = $element;
+          $this->fields->{$element->name} = $element;
         }
         
       }
@@ -180,6 +234,7 @@ class HTMLForm extends HTMLBaseFormElement implements HTMLElementWithBody {
       } else if ($child instanceof HTMLFormElement) {
         $fieldset->elements[] = $child;
         $this->properties->elements[] = $child;
+        $this->fields->{$child->name} = $child;
       }
     }
   }
@@ -188,6 +243,26 @@ class HTMLForm extends HTMLBaseFormElement implements HTMLElementWithBody {
 
 function Form($name) {
   return new HTMLForm($name);
+}
+
+class Fieldset extends HTMLElement implements HTMLFormElement, HTMLElementWithBody  {
+  
+  public function __construct($legend) {
+    parent::__construct('fieldset');
+    
+    $this->properties->elements = array();
+    
+    if ($legend) {
+      $element = new HTMLElement('legend');
+      $element->append($legend);
+      $this->properties->children[] = $element;
+    }
+  }
+  
+}
+
+function Fieldset($legend) {
+  return new Fieldset($legend);
 }
 
 class HTMLLabel extends HTMLBaseElement {
@@ -231,6 +306,10 @@ abstract class HTMLFormInputElement extends HTMLBaseFormElement implements HTMLF
     
     $this->label($label);
     $this->properties->required = FALSE;
+    
+    $this->onattributechange('id', array($this, 'handle_id_change'));
+    
+    $this->id = $name;
   }
   
   public function default_value($value) {
@@ -247,8 +326,8 @@ abstract class HTMLFormInputElement extends HTMLBaseFormElement implements HTMLF
     return $this;
   }
   
-  public function id($id) {
-    $this->attributes['id'] = preg_replace(
+  protected function handle_id_change($id) {
+    $id = preg_replace(
       array('~\]?\[~', '~[^-_:\.\w]~i'), 
       array('-', ''), $id
     );
@@ -257,7 +336,7 @@ abstract class HTMLFormInputElement extends HTMLBaseFormElement implements HTMLF
       $this->properties->label->for($id);
     }
     
-    return $this;
+    $this->attributes['id'] = $id;
   }
   
   public function required($flag) {
@@ -287,6 +366,9 @@ abstract class HTMLInputElement extends HTMLFormInputElement implements HTMLVoid
 class HTMLInputTypeText extends HTMLInputElement {
   public function __construct($name, $label = NULL, $value = NULL) {
     parent::__construct($name, $label, $value);
+    
+    $this->allowed_attributes[] = 'size';
+    
     $this->type('text');
   }
 }
@@ -302,15 +384,11 @@ class HTMLTextarea extends HTMLFormInputElement implements HTMLFormElement {
     
     $this->allowed_attributes[] = 'rows';
     $this->allowed_attributes[] = 'cols';
+    $this->allowed_attributes[] = 'value';
     
     $this->value($value);
   }
-  
-  public function value($value) {
-    $this->value = $value;
-    return $this;
-  }
-  
+
   public function __toString() {
     $this->properties->children = array($this->value);
     return parent::__toString();
@@ -322,22 +400,64 @@ function Textarea($name, $label = NULL, $value = NULL) {
   return new HTMLTextarea($name, $label, $value);
 }
 
-class Fieldset extends HTMLElement implements HTMLFormElement, HTMLElementWithBody  {
+class HTMLOption extends HTMLElement {
   
-  public function __construct($legend) {
-    parent::__construct('fieldset');
+  public function __construct($value, $text, $selected_value) {
+    parent::__construct('option');
     
-    $this->properties->elements = array();
+    $this->allowed_attributes[] = 'value';
+    $this->allowed_attributes[] = 'selected';
     
-    if ($legend) {
-      $element = new HTMLElement('legend');
-      $element->append($legend);
-      $this->properties->children[] = $element;
+    if (!$value) $value = $text;
+    
+    $this->value = $value;
+    
+    if ($value == $selected_value) {
+      $this->selected = 'selected';
     }
+    
+    $this->properties->children[] = $text;
   }
   
 }
 
-function Fieldset($legend) {
-  return new Fieldset($legend);
+class HTMLSelect extends HTMLFormInputElement implements HTMLFormElement {
+
+  public function __construct($name, $label = NULL, $value = NULL) {
+    parent::__construct('select', $name, $label);
+    
+    $this->allowed_attributes[] = 'value';
+    $this->allowed_attributes[] = 'size';
+    $this->allowed_attributes[] = 'multiple';
+    
+    $this->value = $value;
+    
+    $this->onattributechange('value', array($this, 'handle_value_change'));
+  }
+  
+  public function options(array $options) {
+    
+    foreach ($options as $value => $text) {
+      $this->properties->children[] = new HTMLOption($value, $text, $this->value);
+    }
+    
+    return $this;
+  }
+  
+  protected function handle_value_change($value) {
+    
+    foreach ($this->properties->children as $option) {
+      unset($option->selected);
+      if ($option->value == $value) {
+        $option->selected = 'selected';
+      }
+    }
+    
+    return $this;
+  }
+  
+}
+
+function Select($name, $label = NULL, $value = NULL) {
+  return new HTMLSelect($name, $label, $value);
 }
