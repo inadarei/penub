@@ -247,10 +247,11 @@ function Form($name) {
 
 class Fieldset extends HTMLElement implements HTMLFormElement, HTMLElementWithBody  {
   
-  public function __construct($legend) {
+  public function __construct($id, $legend = NULL) {
     parent::__construct('fieldset');
     
     $this->properties->elements = array();
+    $this->id = $id;
     
     if ($legend) {
       $element = new HTMLElement('legend');
@@ -261,8 +262,8 @@ class Fieldset extends HTMLElement implements HTMLFormElement, HTMLElementWithBo
   
 }
 
-function Fieldset($legend) {
-  return new Fieldset($legend);
+function Fieldset($id, $legend = NULL) {
+  return new Fieldset($id, $legend);
 }
 
 class HTMLLabel extends HTMLBaseElement {
