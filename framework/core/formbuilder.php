@@ -446,15 +446,12 @@ class HTMLSelect extends HTMLFormInputElement implements HTMLFormElement {
   }
   
   protected function handle_value_change($value) {
-    
     foreach ($this->properties->children as $option) {
       unset($option->selected);
       if ($option->value == $value) {
         $option->selected = 'selected';
       }
     }
-    
-    return $this;
   }
   
 }
