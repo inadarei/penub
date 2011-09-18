@@ -1,0 +1,10 @@
+<phpunit>
+  <php>
+    <!-- Location of the folder relative to this folder where index.php, app.cfg.php and bootstrap.php are located -->
+    <var name="www_location"  value="../../www"/>
+
+    <var name="couchdb_url"  value="http://127.0.0.1:5984"/>
+    <var name="couchdb_user" value="admin"/>
+    <var name="couchdb_pass" value="passwd"/>
+  </php>
+</phpunit>

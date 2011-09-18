@@ -25,7 +25,7 @@ function dt($msg) {
 */
 function penub_error($msg, $severity = PENUB_ERROR_WARNING) {
 
-  echo ('<pre>' . print_r($msg, TRUE) . '</pre>');
+  echo ('<pre>' . print_r($msg, true) . '</pre>');
   
   if ($severity == PENUB_ERROR_FATAL) {
     exit(1);
@@ -37,23 +37,16 @@ function penub_error($msg, $severity = PENUB_ERROR_WARNING) {
 *  Centralized logger. Logs to Apache log.
 *  @TODO: create a more robust implementation.
 */
-function penub_log($msg, $level = PENUB_LOG_LEVEL_DEBUG) {
-  if ($level >= PENUB_DFLT_LOG_LEVEL) {
+function penub_log($msg, $level = PENUB_LOG_DEBUG) {
+  if ($level >= PENUB_LOG_LEVEL) {
     // Let's try to support complex structures like objects and arrays as well.    
-    error_log(print_r($msg, TRUE));
+    error_log(print_r($msg, true));
   }  
 }
 
-/**
-* Populate request object from HTTP request.
-*/
-function fetch_request_object_from_http() {
-  $req = new stdClass();
-  $req->http_server  = $_SERVER;
-  $req->http_get     = $_GET;
-  $req->http_post    = $_POST;
-  $req->http_files   = $_FILES;  
-  $req->http_request = $_REQUEST;
+/** Give anybody access to the singleton kernel object */
+function penub_kernel() {
+  global $kernel;
   
-  return $req;
+  return $kernel;
 }

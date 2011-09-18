@@ -1,22 +1,11 @@
 <?php
 
-$config_loaded = false;
+define ('PENUB_WWW_PATH', realpath('.')); //not the case for unit-tests run from other locations!
 require ('app.cfg.php');
+require ('bootstrap.php');
 
-$env_config_file = PENUB_CONF_PATH. '/environments/' . PENUB_ENVIRONMENT . '.php';
-if (file_exists($env_config_file)) {
-  require($env_config_file);
-  $config_loaded = true;
-}
+penub_load_configuration();
 
-if (!$config_loaded) {
-  die("Environmental configuration file not found! Please make sure $env_config_file exists!");
-}
-
-require ( PENUB_KERNEL_PATH . '/core/penub.kernel.inc');
-
-
-penub_log("Request processing launched");
-
-$kernel = new PenubKernel();
+require ( PENUB_FRAMEWORK_PATH . '/kernel/penub.kernel.inc');
+$kernel = new PenubKernel;
 $kernel->run();

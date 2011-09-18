@@ -1,22 +1,28 @@
 <?php
 
-require (dirname(__FILE__) . '/module.class.inc');
+require (dirname(__FILE__) . )
+
+abstract class PenubModule {}
 
 class PenubModuleManager {
   
-  var $kernel;
-  var $modules;
-  var $modules_conf_file;
+  private $modules;
+  private $modules_conf_file;
   
-  function __construct($kernel) {
+  function __construct() {
   
-    $this->kernel = $kernel;
-    
     $search_locations = array(
-      PENUB_KERNEL_PATH      . '/modules', 
+      PENUB_FRAMEWORK_PATH      . '/modules',
       PENUB_CONTRIB_PATH     . '/modules', 
       PENUB_CUSTOM_CODE_PATH . '/modules'
     );
+
+    if (!empty(PENUB_ADDITIONAL_MODULE_LOCATIONS)) {
+      $additional_locations = json_decode(PENUB_ADDITIONAL_MODULE_LOCATIONS);
+      if (is_array($additional_locations)) {
+        $search_locations += $additional_locations;
+      }
+    }
     
     if (!file_exists(PENUB_RUNTIMECONF_FOLDER_PATH)) {
       mkdir(PENUB_RUNTIMECONF_FOLDER_PATH);
@@ -48,10 +54,9 @@ class PenubModuleManager {
           if (!class_exists($className)) {
             require ($mod['implementation']['filepath']);
           }
-          
-          $modObj = new $className();
-          $modObj->kernel = $this->kernel;
-          
+
+          $modObj = new $className;
+
           if (method_exists($modObj, $action)) {
             call_user_func_array(array($modObj, $action), array(&$state));
           }

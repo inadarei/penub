@@ -2,17 +2,25 @@
 
 require (dirname(__FILE__) .'/uroute.lib.php');
 
+
+class PenubURLRouter extends PenubModule implements URoute_Constants {
+  function process_http_request() {
+    new PenubURLRouterService(
+      dirname(PENUB_FRAMEWORK_PATH)
+    );
+  }
+}
+
+
 class PenubURLRouterService extends URoute_Service {
   
-  private $kernel;
-  
-  public function __construct($endpoint, $kernel) {
-    $this->kernel = $kernel;
+  public function __construct($endpoint) {
     parent::__construct($endpoint);
   }
   
   public function service() {
-    $routes = $this->kernel->module_manager->dispatch('routes', array());
+    $kernel = penub_kernel();
+    $routes = $kernel->get_module_manager()->dispatch('routes', array());
     foreach ($routes as $path => $route) {
       $route['path'] = $path;
       $this->addRoute($route);
@@ -24,11 +32,3 @@ class PenubURLRouterService extends URoute_Service {
   
 }
 
-class PenubURLRouter extends PenubModule implements URoute_Constants {
-  function processHTTPRequest() {
-    new PenubURLRouterService(
-      dirname(PENUB_KERNEL_PATH),
-      $this->kernel
-    );
-  }
-}

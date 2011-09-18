@@ -1,49 +1,39 @@
 <?php
 /**
-* Kernel class is responsible for bootstrapping and orchestrating a request.
+* Kernel class is responsible for bootstrapping and orchestrating an HTTP request.
 */
 
-require (PENUB_KERNEL_PATH     . '/core/penub.util.inc');
+require (dirname(__FILE__) . '/penub.util.inc');
 require (PENUB_LIB_FOLDER_PATH . '/spyc/spyc.php');
 
 class PenubKernel {
   
-  var $http_server;
-  var $http_get;
-  var $http_post;
-  var $http_files;  
-  var $http_request;
-
-  var $module_manager;
-  
-  var $page_load_started;
+  private $page_load_started;
+  private $module_manager;
     
   function __construct() {
+
     if (PENUB_SHOW_METRICS) {
       $this->page_load_started = microtime(True);
     }
-    
-    require (PENUB_KERNEL_PATH . '/core/module.manager.inc');    
-    $this->module_manager = new PenubModuleManager($this);
-  } 
-  
+
+  }
+
   function run() {
-    $req = fetch_request_object_from_http();    
-    
-    $this->http_server  = $req->http_server;  
-    $this->http_get     = $req->http_get;     
-    $this->http_post    = $req->http_post;    
-    $this->http_files   = $req->http_files;   
-    $this->http_request = $req->http_request; 
-    
-    $this->module_manager->dispatch('processHTTPRequest');
-    
+    require (dirname(__FILE__) . '/module.manager.inc');
+    $this->module_manager = new PenubModuleManager();
+    $this->module_manager->dispatch('process_http_request');
+
     if (PENUB_SHOW_METRICS) {
-      $this->printMetrics();
+      $this->print_metrics();
     }
   }
-  
-  private function printMetrics() {
+
+  public function get_module_manager() {
+    return $this->module_manager;
+  }
+
+  public function print_metrics() {
     $endtime = microtime(True);
     
     $metrics[] = sprintf(dt('Page loaded in %.6f seconds'), $endtime - $this->page_load_started);
@@ -53,3 +43,5 @@ class PenubKernel {
    
   
 }
+
+class PenubException extends Exception {}
