@@ -1,15 +1,16 @@
 <?php
 
-phpinfo();
-die();
+$config_loaded = false;
+require ('app.cfg.php');
 
-
-$config_file = realpath(dirname(__FILE__) . '/../config.php');
-if (file_exists($config_file)) {
-  require ($config_file);
+$env_config_file = PENUB_CONF_PATH. '/environments/' . PENUB_ENVIRONMENT . '.php';
+if (file_exists($env_config_file)) {
+  require($env_config_file);
+  $config_loaded = true;
 }
-else {
-  die("Configuration file not found! Please make sure there's config.php in the root folder.");
+
+if (!$config_loaded) {
+  die("Environmental configuration file not found! Please make sure $env_config_file exists!");
 }
 
 require ( PENUB_KERNEL_PATH . '/core/penub.kernel.inc');
