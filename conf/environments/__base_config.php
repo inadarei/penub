@@ -39,7 +39,7 @@ $penub_config_base = array (
   
   'PENUB_CACHE_LEVEL'       =>  0, //Switch to at least PENUB_CACHE_CONFIG in production!
 
-  'PENUB_APP_CACHE_PROVIDER' => 'apc', //Valid choices: 'apc', 'disk' (coming soon: 'memcache')
+  'PENUB_APP_CACHE_PROVIDER' => 'file', //Valid choices: 'apc', 'file' (coming soon: 'shmop' and 'memcache')
 
   'PENUB_SHOW_METRICS'      => true, //Switch to False in production!
 

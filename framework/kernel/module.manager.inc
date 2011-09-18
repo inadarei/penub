@@ -1,14 +1,13 @@
 <?php
 
-require (dirname(__FILE__) . )
+require (dirname(__FILE__) . '/modules_cache.inc');
 
 abstract class PenubModule {}
 
 class PenubModuleManager {
   
   private $modules;
-  private $modules_conf_file;
-  
+
   function __construct() {
   
     $search_locations = array(
@@ -17,33 +16,36 @@ class PenubModuleManager {
       PENUB_CUSTOM_CODE_PATH . '/modules'
     );
 
-    if (!empty(PENUB_ADDITIONAL_MODULE_LOCATIONS)) {
-      $additional_locations = json_decode(PENUB_ADDITIONAL_MODULE_LOCATIONS);
+    if (defined('PENUB_ADDITIONAL_MODULE_LOCATIONS')) {
+      $additional_locations = json_decode(PENUB_ADDITIONAL_MODULE_LOCATIONS); //constants can only store scalars!
       if (is_array($additional_locations)) {
         $search_locations += $additional_locations;
       }
     }
-    
-    if (!file_exists(PENUB_RUNTIMECONF_FOLDER_PATH)) {
-      mkdir(PENUB_RUNTIMECONF_FOLDER_PATH);
+
+    // Try retrieving modules list from cache if cache enabled and not empty
+    if (PENUB_CACHE_LEVEL >= PENUB_CACHE_CONFIG) {
+      $cache = PenubModulesCacheFactory::getModulesCache(PENUB_APP_CACHE_PROVIDER);
+      $modules = $cache->get();
+      if (!empty($modules) && is_array($modules)) {
+        $this->modules = $modules;
+      }
+    }
+
+    if (empty($this->modules) || !is_array($this->modules)) {
+        $this->findModules($search_locations);
+        $this->checkEnabledStatusOfModules();
+        $this->sortModulesByWeight();
+      
+        if (PENUB_CACHE_LEVEL >= PENUB_CACHE_CONFIG) {
+          $cache->set($this->modules);
+        }
     }
     
-    $this->modules_conf_file = PENUB_RUNTIMECONF_FOLDER_PATH . '/modules.conf';
-    
-    if (file_exists($this->modules_conf_file) && (PENUB_CACHE_LEVEL != PENUB_CACHE_NONE)) {
-      $this->modules = Spyc::YAMLLoad($this->modules_conf_file);
-    } else {                          
-      $this->findModules($search_locations);
-      $this->checkEnabledStatusOfModules();
-      $this->sortModulesByWeight();
-      $yaml = Spyc::YAMLDump($this->modules);
-      file_put_contents($this->modules_conf_file, $yaml, LOCK_EX);      
-    }
   }
   
   function dispatch($action, $state = NULL) {
-    //penub_error($this->modules);
-    
+
     if (is_array($this->modules)) {
 
       foreach ($this->modules as $mod) {

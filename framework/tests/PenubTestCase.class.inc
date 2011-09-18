@@ -23,13 +23,16 @@ abstract class PenubTestCase extends PHPUnit_Framework_TestCase {
       throw new Exception ("Unable to locate app.cfg.php. Please fix setting in phpunitConfig.xml ");
     }
 
-    define ('PENUB_WWW_PATH', $www_loc);
-    
-    require ($www_loc . '/app.cfg.php');
-    require ($www_loc . '/bootstrap.php');
+    if (!defined('PENUB_WWW_PATH')) { // avoid attempts of repeated definitions
+      define ('PENUB_WWW_PATH', $www_loc);
+    }
 
-    penub_load_configuration();
-    require ( PENUB_FRAMEWORK_PATH . '/kernel/penub.kernel.inc');
+    if (!defined('PENUB_FRAMEWORK_PATH')) { // avoid multiple parsing due to multiple test runs
+      require_once ($www_loc . '/app.cfg.php');
+      require_once ($www_loc . '/bootstrap.php');
+      penub_load_configuration();
+    }
+    require_once ( PENUB_FRAMEWORK_PATH . '/kernel/penub.kernel.inc');
     
   }
 

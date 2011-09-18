@@ -4,7 +4,6 @@
 */
 
 require (dirname(__FILE__) . '/penub.util.inc');
-require (PENUB_LIB_FOLDER_PATH . '/spyc/spyc.php');
 
 class PenubKernel {
   
