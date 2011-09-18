@@ -45,15 +45,12 @@ function penub_log($msg, $level = PENUB_LOG_LEVEL_DEBUG) {
 }
 
 /**
-* Populate request object from HTTP request.
+* Populate an object from HTTP request.
 */
-function fetch_request_object_from_http() {
-  $req = new stdClass();
-  $req->http_server  = $_SERVER;
-  $req->http_get     = $_GET;
-  $req->http_post    = $_POST;
-  $req->http_files   = $_FILES;  
-  $req->http_request = $_REQUEST;
-  
-  return $req;
+function fetch_request_object_from_http(&$obj) {
+  $obj->http_server  = $_SERVER;
+  $obj->http_get     = $_GET;
+  $obj->http_post    = $_POST;
+  $obj->http_files   = $_FILES;
+  $obj->http_request = $_REQUEST;
 }

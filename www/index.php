@@ -7,6 +7,7 @@ else {
   die("Configuration file not found! Please make sure there's config.php in the root folder.");
 }
 
+penub_log("Request processing launched");
 require (PENUB_KERNEL_PATH . '/core/penub.kernel.inc');
 
 $kernel = new PenubKernel();

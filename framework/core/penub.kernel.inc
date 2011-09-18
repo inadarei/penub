@@ -8,15 +8,15 @@ require (PENUB_LIB_FOLDER_PATH . '/spyc/spyc.php');
 
 class PenubKernel {
   
-  var $http_server;
-  var $http_get;
-  var $http_post;
-  var $http_files;  
-  var $http_request;
+  private $http_server;
+  private $http_get;
+  private $http_post;
+  private $http_files;
+  private $http_request;
 
-  var $module_manager;
+  private $module_manager;
   
-  var $page_load_started;
+  private $page_load_started;
     
   function __construct() {
     if (PENUB_SHOW_METRICS) {
@@ -28,14 +28,8 @@ class PenubKernel {
   } 
   
   function run() {
-    $req = fetch_request_object_from_http();    
-    
-    $this->http_server  = $req->http_server;  
-    $this->http_get     = $req->http_get;     
-    $this->http_post    = $req->http_post;    
-    $this->http_files   = $req->http_files;   
-    $this->http_request = $req->http_request; 
-    
+    $req = fetch_request_object_from_http($this);
+        
     $this->module_manager->dispatch('processHTTPRequest');
     
     if (PENUB_SHOW_METRICS) {
