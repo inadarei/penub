@@ -8,9 +8,9 @@ require (dirname(__FILE__) . '/penub.util.inc');
 class PenubKernel {
   
   private $page_load_started;
-  private $module_manager;
+  private static $module_manager;
     
-  function __construct() {
+  public function __construct() {
 
     if (PENUB_SHOW_METRICS) {
       $this->page_load_started = microtime(True);
@@ -18,25 +18,22 @@ class PenubKernel {
 
   }
 
-  function run() {
+  public function run() {
     require (dirname(__FILE__) . '/module.manager.inc');
-    $this->module_manager = new PenubModuleManager();
-    $this->module_manager->dispatch('process_http_request');
+    self::$module_manager = new PenubModuleManager();
+    self::$module_manager->dispatch('process_http_request');
 
     if (PENUB_SHOW_METRICS) {
       $this->print_metrics();
     }
   }
 
-  public function get_module_manager() {
-    return $this->module_manager;
+  public static function module_manager() {
+    return self::$module_manager;
   }
 
-  public function print_metrics() {
-    $endtime = microtime(True);
-    
-    $metrics[] = sprintf(dt('Page loaded in %.6f seconds'), $endtime - $this->page_load_started);
-        
+  private function print_metrics() {
+    $metrics[] = sprintf(dt('Page loaded in %.6f seconds'), microtime(True) - $this->page_load_started);
     penub_error($metrics);    
   }
    

@@ -20,7 +20,7 @@ class PenubURLRouterService extends URoute_Service {
   
   public function service() {
     $kernel = penub_kernel();
-    $routes = $kernel->get_module_manager()->dispatch('routes', array());
+    $routes = PenubKernel::module_manager()->dispatch('routes', array());
     foreach ($routes as $path => $route) {
       $route['path'] = $path;
       $this->addRoute($route);

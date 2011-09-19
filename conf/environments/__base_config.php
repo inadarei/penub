@@ -37,7 +37,7 @@ $penub_config_base = array (
   'PENUB_CACHE_NORMAL'      =>  2,
   'PENUB_CACHE_AGGRESSIVE'  =>  3,
   
-  'PENUB_CACHE_LEVEL'       =>  0, //Switch to at least PENUB_CACHE_CONFIG in production!
+  'PENUB_CACHE_LEVEL'       =>  1, //Switch to at least PENUB_CACHE_CONFIG in production!
 
   'PENUB_APP_CACHE_PROVIDER' => 'file', //Valid choices: 'apc', 'file' (coming soon: 'shmop' and 'memcache')
 
