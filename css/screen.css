@@ -1,2 +1,7 @@
+body {
+  width: 90%;
+  max-width: 980px;
+  background: silver;
+}
 h1 {
 }
