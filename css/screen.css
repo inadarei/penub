@@ -1,8 +1,9 @@
 div.site {
   margin: 0 auto;
+  padding: 10px;
   width: 90%;
-  max-width: 980px;
-  background: silver;
+  max-width: 970px;
+  background: #efefef;
   border: 1px solid white;
 }
 
@@ -10,8 +11,8 @@ html {
     margin: 0;
     font-family: Helvetica;
     font-size: 16px;
-    color: #fff;
-    background: #335061;
+    color: #black;
+    background: #004080;
 }
 
 h1 {
