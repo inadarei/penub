@@ -22,8 +22,10 @@ div#content {
   width: 75%;
 }
 
-div#innertoc {
+div#column {
+  float: right;
   width: 25%;
+  background-color: yellow;
 }
 
 h1, h2, h3, h4, h5, h6 {
