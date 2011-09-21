@@ -1,8 +1,5 @@
 $('document').ready(function(){
   
-  alert("hello");
-  
-  
   function createTOC() {
   	var y = document.createElement('div');
   	y.id = 'innertoc';
@@ -36,7 +33,7 @@ $('document').ready(function(){
   	return y;
   }
 
-  var TOCstate = 'block';
+  var TOCstate = 'none';
 
   function showhideTOC() {
   	TOCstate = (TOCstate == 'none') ? 'block' : 'none';
@@ -44,4 +41,6 @@ $('document').ready(function(){
   	document.getElementById('contentheader').innerHTML = newText;
   	document.getElementById('innertoc').lastChild.style.display = TOCstate;
   }
+  
+  showhideTOC();
 });
