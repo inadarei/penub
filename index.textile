@@ -3,5 +3,57 @@ layout: default
 title: Penub PHP Framework
 ---
 
-h1. What is Penub
+h1. What is Penub?
+
+{% highlight php %}
+
+<?php
+
+function sql_instring($arr) {
+    if (empty($arr)) {
+        return "IS NULL";
+    }
+
+    return "IN (" .
+    implode(',', 
+            array_map(function($arg) {
+                if (is_numeric($arg)) {
+                    return $arg;
+                }
+                elseif (is_string($arg)) {
+                    return "'$arg'";
+                }
+                else {
+                    throw new Exception('Invalid Argument: must be string or a number.');
+                }
+            }, 
+            $arr)
+    ) .
+    ")"; 
+}
+
+class SQLInTest extends PHPUnit_Framework_TestCase {
+
+    function test_instring() {    
+        $arr = array (1,2,3,4,5);
+        $expected = "IN (1,2,3,4,5)";
+        $this->assertEquals($expected,sql_instring($arr));        
+        
+        $arr = array (1);
+        $expected = "IN (1)";
+        $this->assertEquals($expected,sql_instring($arr));        
+
+        $arr = array ();
+        $expected = "IS NULL";
+        $this->assertEquals($expected,sql_instring($arr));        
+
+        $arr = array ('a', 'b', 'c');
+        $expected = "IN ('a','b','c')";
+        $this->assertEquals($expected,sql_instring($arr));        
+
+    }
+
+}
+
+{% endhighlight %}
 
