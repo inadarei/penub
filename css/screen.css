@@ -17,7 +17,8 @@ div.site {
 }
 
 code, pre, tt, textarea {
-
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 pre {
