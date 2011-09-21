@@ -17,13 +17,14 @@ div.site {
 }
 
 code, pre, tt, textarea {
-  font-family: Monaco, Consolas, "Lucida Console", monospace;
-  font-size: 75%;
-  line-height: 150%;
+
 }
 
 pre {
   padding: 10px;
+  font-family: Monaco, Consolas, "Lucida Console", monospace;
+  font-size: 75%;
+  line-height: 150%;
 }
 
 h1 {
