@@ -55,8 +55,8 @@ $('document').ready(function(){
   		if (toBeTOCced[i].nodeName == 'H2') {
   			tmp.innerHTML = 'Top';
   			tmp.href = '#top';
-  			toBeTOCced[i].id = 'top';*/
-  		}
+  			toBeTOCced[i].id = 'top';
+  		}*/
   	}
   	return y;
   }
