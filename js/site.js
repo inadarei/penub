@@ -49,13 +49,13 @@ $('document').ready(function(){
   			tmp.className += ' indent';
   		if (toBeTOCced[i].nodeName == 'H5')
   			tmp.className += ' extraindent';
-  		var headerId = toBeTOCced[i].id || 'link' + i;
+  		/*var headerId = toBeTOCced[i].id || 'link' + i;
   		tmp.href = '#' + headerId;
   		toBeTOCced[i].id = headerId;
   		if (toBeTOCced[i].nodeName == 'H2') {
   			tmp.innerHTML = 'Top';
   			tmp.href = '#top';
-  			toBeTOCced[i].id = 'top';
+  			toBeTOCced[i].id = 'top';*/
   		}
   	}
   	return y;
