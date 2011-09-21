@@ -3,6 +3,7 @@ html {
     padding: 0;
     font-family: Helvetica;
     font-size: 14px;
+    line-height: 150%;
     color: #777;
     background: #aabbcc;
 }
@@ -25,7 +26,6 @@ pre {
   padding: 10px;
   font-family: Monaco, Consolas, "Lucida Console", monospace;
   font-size: 85.7142857%; /** 12/14 **/
-  line-height: 150%;
 }
 
 h1 {
