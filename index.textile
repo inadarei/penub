@@ -17,6 +17,18 @@ h2. Credits
 
 Modular architecture of Penub is greatly inspired by architectural modularity of Drupal. A lot of cool ideas were shamelessly borrowed from Rails, as well.
 
+h2. Design Principles
+
+- Modular design – any code is part of some module, including core code. There’s no code outside module code (except module management code of the framework, obviously)
+- Separate framework, contrib and custom code trees.
+-- Framework – microkernel code
+-- Contrib – any third-party modules that you use, but don’t have control of (don’t hack contrib!)
+-- Custom – project code (whether you are building a website or a web app)
+Only one file: index.php is publicly available from web. Everything else is protected by web server [Apache or Nginx] access rules and can even be moved out of web folder.
+- Single, short configuration file. Wiring-up happens in code. We don’t like XML.
+- Support for hook-able overrides
+- Flexible URL Routing API. Explicit code-based definitions for routes.
+
 {% highlight php %}
 
 class SQLInTest extends PHPUnit_Framework_TestCase {
