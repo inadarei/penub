@@ -5,32 +5,19 @@ title: Penub PHP Framework
 
 h1. What is Penub?
 
+Penub (PHP Nuts and Bolts) is a lean, robust PHP microkernel intended for building slik web applications with least distraction.
+
+h2. What is it not?
+
+Penub is not a CMS. Nor will it ever be, if you want a PHP CMS, download Drupal
+Penub is not a “full-stack framework” with ORM for SQL databases. We actually enjoy writing code against document databases and never believed in ORMs to begin with.
+Penub is not a port of RubyOnRails, Django, Struts, Tapestry, [insert some other here] framework to PHP
+
+h2. Credits
+
+Modular architecture of Penub is greatly inspired by architectural modularity of Drupal. A lot of cool ideas were shamelessly borrowed from Rails, as well.
+
 {% highlight php %}
-
-<?php
-
-function sql_instring($arr) {
-    if (empty($arr)) {
-        return "IS NULL";
-    }
-
-    return "IN (" .
-    implode(',', 
-            array_map(function($arg) {
-                if (is_numeric($arg)) {
-                    return $arg;
-                }
-                elseif (is_string($arg)) {
-                    return "'$arg'";
-                }
-                else {
-                    throw new Exception('Invalid Argument: must be string or a number.');
-                }
-            }, 
-            $arr)
-    ) .
-    ")"; 
-}
 
 class SQLInTest extends PHPUnit_Framework_TestCase {
 
