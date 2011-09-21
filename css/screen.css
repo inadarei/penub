@@ -3,6 +3,7 @@ div.screen {
   width: 90%;
   max-width: 980px;
   background: silver;
+  border: 1px solid white;
 }
 
 html {
