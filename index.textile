@@ -29,28 +29,38 @@ Only one file: index.php is publicly available from web. Everything else is prot
 * Support for hook-able overrides
 * Flexible URL Routing API. Explicit code-based definitions for routes.
 
+h2. Penub Modules and the Dispatch Architecture
+
+The core architectural concept that Penub adheres to is that everything is a module. There’s a lean microkernel, everything else (including Penub framework itself) is a set of pluggable modules. When Penub (or an application built on top of Penub) needs to execute some action, it issues a dispatch request for the action. Any module can hook into the dispatch and either react by some actions or alter the values of the $context array passed through the dispatch. Such loose and abstract implementation of the Chain of Responsibility pattern allows us to keep things extremely pluggable and modular.
+
+The smallest module, in penub, consists of a .module configuration file and the main module class file. An example of a .module file may look like:
+
 {% highlight php %}
+<?php
 
-class SQLInTest extends PHPUnit_Framework_TestCase {
+/**
+* @File Default implementation of the URL Router.
+*/
 
-    function test_instring() {    
-        $arr = array (1,2,3,4,5);
-        $expected = "IN (1,2,3,4,5)";
-        $this->assertEquals($expected,sql_instring($arr));        
-        
-        $arr = array (1);
-        $expected = "IN (1)";
-        $this->assertEquals($expected,sql_instring($arr));        
-
-        $arr = array ();
-        $expected = "IS NULL";
-        $this->assertEquals($expected,sql_instring($arr));        
-
-        $arr = array ('a', 'b', 'c');
-        $expected = "IN ('a','b','c')";
-        $this->assertEquals($expected,sql_instring($arr));        
-
-    }
+/**
+* Module configuration.
+*/
+function router_config() {
+  return array (
+    'info' => array (
+      'title' => 'Default Routing Library',
+      'description' => 'Default implementation of URL routing',
+      'version' => '1.0',      
+      'weight' => '0', //-- 0 is default
+      'dependencies' => array(),
+    ),
+    'implementation' => array (
+      'class' => 'PenubURLRouter',
+      //-- location is relative to penub/modules, pcontrib/modules or custom/modules
+      //-- if omitted it is assumed that the location of the class file is the same as of the module file
+      //--'filepath' => 'router/PenubURLRouter.class.inc', 
+    )
+  );
 
 }
 
