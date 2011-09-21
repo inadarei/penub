@@ -26,7 +26,8 @@ $('document').ready(function(){
   }
   
   function createTOC() {
-  	y = $('#innertoc');
+  	var y = document.createElement('div');
+  	y.id = 'innertoc';
   	var a = y.appendChild(document.createElement('span'));
   	a.onclick = showhideTOC;
   	a.id = 'contentheader';
