@@ -13,13 +13,14 @@ div.site {
   padding: 10px;
   width: 90%;
   max-width: 970px;
-  background: #f0f0f0;
-  border: 1px solid white;
 }
 
 div#content {
   float: left;
-  width: 75%;
+  padding: 10px;
+  background: #f0f0f0;
+  border: 1px solid white;
+
 }
 
 div#column {
