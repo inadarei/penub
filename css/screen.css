@@ -2,7 +2,7 @@ html {
     margin: 0;
     padding: 0;
     font-family: Helvetica;
-    font-size: 16px;
+    font-size: 14px;
     color: #777;
     background: #aabbcc;
 }
@@ -24,7 +24,7 @@ code, pre, tt, textarea {
 pre {
   padding: 10px;
   font-family: Monaco, Consolas, "Lucida Console", monospace;
-  font-size: 75%;
+  font-size: 85.7142857%; /** 12/14 **/
   line-height: 150%;
 }
 
