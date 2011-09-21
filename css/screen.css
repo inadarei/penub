@@ -1,12 +1,3 @@
-div.site {
-  margin: 0 auto;
-  padding: 10px;
-  width: 90%;
-  max-width: 970px;
-  background: #efefef;
-  border: 1px solid white;
-}
-
 html {
     margin: 0;
     padding: 0;
@@ -16,13 +7,19 @@ html {
     background: #aabbcc;
 }
 
+div.site {
+  margin: 0 auto;
+  padding: 10px;
+  width: 90%;
+  max-width: 970px;
+  background: #efefef;
+  border: 1px solid white;
+}
+
 code, pre, tt, textarea {
   font-family: Monaco, Consolas, "Lucida Console", monospace;
-  font-size: .75em;
-  line-height: 1.5em;
-  color: #155;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  font-size: 75%;
+  line-height: 150%;
 }
 
 pre {
