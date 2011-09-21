@@ -36,7 +36,9 @@ $('document').ready(function(){
   	z.onclick = showhideTOC;
   	var toBeTOCced = getElementsByTagNames('h2,h3,h4,h5');
   	if (toBeTOCced.length < 2) return false;
-
+    
+    console.dir(toBeTOCced);
+    
   	for (var i=0;i<toBeTOCced.length;i++) {
   		var tmp = document.createElement('a');
   		tmp.innerHTML = toBeTOCced[i].innerHTML;
