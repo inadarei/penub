@@ -36,7 +36,7 @@ $('document').ready(function(){
   	return y;
   }
 
-  var TOCstate = 'none';
+  var TOCstate = 'block';
 
   function showhideTOC() {
   	TOCstate = (TOCstate == 'none') ? 'block' : 'none';
