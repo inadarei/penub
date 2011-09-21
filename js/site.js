@@ -42,5 +42,6 @@ $('document').ready(function(){
   	document.getElementById('innertoc').lastChild.style.display = TOCstate;
   }
   
+  createTOC();
   showhideTOC();
 });
