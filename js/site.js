@@ -42,6 +42,7 @@ $('document').ready(function(){
   	for (var i=0;i<toBeTOCced.length;i++) {
   		var tmp = document.createElement('a');
   		tmp.innerHTML = toBeTOCced[i].innerHTML;
+  		console.log(tmp);
   		tmp.className = 'page';
   		z.appendChild(tmp);
   		if (toBeTOCced[i].nodeName == 'H4')
