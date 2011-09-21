@@ -16,5 +16,18 @@ html {
     background: #aabbcc;
 }
 
+code, pre, tt, textarea {
+  font-family: Monaco, Consolas, "Lucida Console", monospace;
+  font-size: .75em;
+  line-height: 1.5em;
+  color: #155;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+pre {
+  padding: 10px;
+}
+
 h1 {
 }
