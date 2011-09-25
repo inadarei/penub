@@ -5,7 +5,7 @@ title: Penub PHP Framework
 
 h1. What is Penub?
 
-Penub (PHP Nuts and Bolts) is a lean, robust PHP microkernel intended for building slik web applications with least distraction.
+Penub (PHP Nuts and Bolts) is a lean, robust PHP microkernel intended for building slick web applications with least distraction.
 
 h2. What is it not?
 
