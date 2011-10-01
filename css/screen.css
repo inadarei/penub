@@ -24,9 +24,10 @@ div#content {
 }
 
 div#column {
+  font-size: 0.85em;
   float: right;
   width: 15%;
-  padding: 5px;
+  padding: 5px 10px;
   background-color: #efefef;
   border-top-left-radius: 5% 5%;
   -moz-border-top-left-radius: 5% 5%;
@@ -40,7 +41,7 @@ div#column a {
   display: block;
   color: blue;
   text-decoration: underline;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 h1, h2, h3, h4, h5, h6 {
