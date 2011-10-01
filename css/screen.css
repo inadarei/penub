@@ -26,13 +26,14 @@ div#content {
 div#column {
   float: right;
   width: 15%;
+  padding: 5px;
   background-color: #efefef;
-  border-top-left-radius: 10% 5%;
-  -moz-border-top-left-radius: 10% 5%;
-  -webkit-border-top-left-radius: 10% 5%;
-  border-bottom-left-radius: 10% 5%;
-  -moz-border-bottom-left-radius: 10% 5%;
-  -webkit-border-bottom-left-radius: 10% 5%;
+  border-top-left-radius: 5% 5%;
+  -moz-border-top-left-radius: 5% 5%;
+  -webkit-border-top-left-radius: 5% 5%;
+  border-bottom-left-radius: 5% 5%;
+  -moz-border-bottom-left-radius: 5% 5%;
+  -webkit-border-bottom-left-radius: 5% 5%;
 }
 
 div#column a {
