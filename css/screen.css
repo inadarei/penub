@@ -16,17 +16,23 @@ div.site {
 }
 
 div#content {
-  float: left;
+  float: right;
   width: 80%;
   padding: 10px;
   background: white;
-  border: 1px solid white;
+  border: 1px solid gray;
 }
 
 div#column {
-  float: left;
+  float: right;
   width: 15%;
   background-color: #efefef;
+  border-bottom-right-radius: 10% 5%;
+  -moz-border-bottom-right-radius: 10% 5%;
+  -webkit-border-bottom-right-radius: 10% 5%;
+  border-bottom-left-radius: 10% 5%;
+  -moz-border-bottom-left-radius: 10% 5%;
+  -webkit-border-bottom-left-radius: 10% 5%;
 }
 
 div#column a {
