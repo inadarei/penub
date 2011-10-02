@@ -38,13 +38,11 @@ div#column {
 }
 
 #portamento_container {
-	float:right; 
 	position:absolute;
 	right: 0; top: 0;
 }
 
 #portamento_container #column {
-	float:none; 
 	position:absolute;
 }
 
