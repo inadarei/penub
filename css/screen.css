@@ -39,12 +39,19 @@ div#column {
 
 #portamento_container {
 	float:right; 
-	position:relative;
+	position:absolute;
+	right: 0; top: 0;
 }
 
 #portamento_container #column {
 	float:none; 
 	position:absolute;
+}
+
+#portamento_container #column.fixed {
+	position:fixed; 
+	right:auto; 
+	top:auto;
 }
 
 div#column a {
