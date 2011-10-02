@@ -37,21 +37,6 @@ div#column {
   -webkit-border-bottom-left-radius: 5% 5%;
 }
 
-#portamento_container {
-	position:absolute;
-	right: 0; top: 0;
-}
-
-#portamento_container #column {
-	position:absolute;
-}
-
-#portamento_container #column.fixed {
-	position:fixed; 
-	right:auto; 
-	top:auto;
-}
-
 div#column a {
   display: block;
   color: blue;
