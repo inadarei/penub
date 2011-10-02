@@ -1,4 +1,6 @@
 $('document').ready(function(){
+	
+  $('#column').portamento();	
   
   function getElementsByTagNames(list,obj) {
   	if (!obj) var obj = document;
