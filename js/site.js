@@ -73,5 +73,5 @@ $('document').ready(function(){
   document.getElementById('column').appendChild(createTOC());
   showhideTOC();
 
-  //$('#column').portamento();	
+  $('#column').portamento();	
 });

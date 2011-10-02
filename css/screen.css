@@ -37,6 +37,16 @@ div#column {
   -webkit-border-bottom-left-radius: 5% 5%;
 }
 
+#portamento_container {
+	float:right; 
+	position:relative;
+}
+
+#portamento_container #column {
+	float:none; 
+	position:absolute;
+}
+
 div#column a {
   display: block;
   color: blue;
