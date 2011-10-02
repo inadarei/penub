@@ -1,6 +1,4 @@
-$('document').ready(function(){
-	
-  $('#column').portamento();	
+$('document').ready(function(){	
   
   function getElementsByTagNames(list,obj) {
   	if (!obj) var obj = document;
@@ -74,4 +72,6 @@ $('document').ready(function(){
   
   document.getElementById('column').appendChild(createTOC());
   showhideTOC();
+
+  $('#column').portamento();	
 });
