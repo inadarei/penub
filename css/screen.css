@@ -65,7 +65,7 @@ pre {
 div#column ul {
     list-style: none;
 	margin: 0;
-	padding 0;
+	padding 0!important;
 }
 div#column ul {
 	margin: 0;
