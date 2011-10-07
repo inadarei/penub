@@ -60,6 +60,19 @@ pre {
   font-size: 85.7142857%; /** 12/14 **/
 }
 
+
+
+div#toc ul {
+    list-style: none;
+}
+div#toc ul li ul {
+    margin-bottom: 0.75em;
+}
+div#toc ul li ul li ul {
+    margin-bottom: 0.25em;
+}
+
+
 .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { *zoom: 1; }
