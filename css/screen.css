@@ -62,13 +62,13 @@ pre {
 
 
 
-div#toc ul {
+div#column ul {
     list-style: none;
 }
-div#toc ul li ul {
+div#column ul li ul {
     margin-bottom: 0.75em;
 }
-div#toc ul li ul li ul {
+div#column ul li ul li ul {
     margin-bottom: 0.25em;
 }
 
